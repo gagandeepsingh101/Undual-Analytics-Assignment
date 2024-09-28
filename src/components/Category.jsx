@@ -1,24 +1,28 @@
 import React from 'react';
-import { useSearchParams } from 'react-router-dom';
+import Select from 'react-select';
 
 const Category = ({ categories, onSelectCategory }) => {
-    const [searchParams] = useSearchParams(); // Use useSearchParams for URL query parameters
+    const options = [
+        { value: '', label: 'All' },
+        ...categories.map(category => ({ value: category.name, label: category.name })),
+    ];
+
     return (
-        <div className="category-select mb-4 flex gap-2 items-center">
-            <h2 className="text-xl font-semibold">Select Category</h2>
-            <select
-            className=' outline-none py-2 px-2 rounded-lg bg-gray-100 '
-                value={searchParams.get("category") || ''}
-                onChange={(e) => onSelectCategory(e.target.value)}
-            >
-                <option value="">All</option>
-                {categories.map((category, index) => (
-                    // Using the index of the array as a key
-                    <option key={category.name + index} value={category?.name}>
-                        {category?.name}
-                    </option>
-                ))}
-            </select>
+        <div className="flex items-center  gap-4">
+            <h2 className="text-xl font-bold text-black">Select Category :</h2>
+            <Select
+                options={options}
+                onChange={(option) => onSelectCategory(option.value)}
+                classNamePrefix="select"
+                placeholder=""
+                styles={{
+                    control: (provided) => ({
+                        ...provided,
+                        width:"200px",
+                    }),
+                }}
+                defaultValue={options[0]} // Set default value to "All"
+            />
         </div>
     );
 };

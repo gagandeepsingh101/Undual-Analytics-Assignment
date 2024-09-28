@@ -63,13 +63,15 @@ const App = () => {
     dispatch(fetchProducts({ category: selectedCategory, searchQuery: search, skip: newSkip }));
   };
 
+  console.log(products);
+
   return (
     <div className="container mx-auto flex items-center justify-center flex-col gap-10 w-screen h-fit">
       <h1 className="text-3xl font-bold text-center text-blue-700 my-4"> 🛒 Product Store</h1>
-      <div className='w-full h-fit flex'>
+      <div className='w-full h-fit flex items-center '>
         <Category categories={categories} onSelectCategory={handleCategorySelect} selectedCategory={selectedCategory} />
 
-        <form onSubmit={handleSearchSubmit} className="flex justify-center mb-4 w-1/2">
+        <form onSubmit={handleSearchSubmit} className="flex justify-center w-1/2">
           <input
             type="text"
             value={search}
@@ -84,12 +86,17 @@ const App = () => {
 
       </div>
       <ProductList products={products} />
-
-      {products.length > 0 && (
-        <button onClick={handleLoadMore} className="load-more my-10  bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition">
+      {products.length > 0 &&
+        <button
+          aria-disabled={products.length < 10}
+          disabled={products.length < 10} // Disable the button when conditions are met
+          onClick={handleLoadMore}
+          className={`load-more my-10 px-4 py-2 rounded-lg transition 
+        ${products.length < 10 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}
+    `}>
           Load More
         </button>
-      )}
+      }
     </div>
   );
 };
